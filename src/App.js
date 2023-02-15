@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React,{useState} from 'react' // rfc sortcut
+import axios from 'axios';
+export default function App() {
+  const [enteredData,setEnterdData]= useState({
+    name:'',
+    mobile:''
+  })
+  const changeHandler=(event)=>{
+     const {name,value} = event.target;
+     setEnterdData((prevData)=>{
+     return { ...prevData,
+      [name]:value}
+     })
 
-function App() {
+  }
+  const clickHandler= async (event)=>{
+        event.preventDefault();
+      let response= await axios.post("http://localhost:3999/create-post", enteredData)
+      console.log(response);
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>todo App</h1>
+      <form >
+        <input onChange={changeHandler} type="text" placeholder='name' name='name'/>
+        <input onChange={changeHandler} type="number" placeholder='number' name='mobile'/>
+        <button onClick={clickHandler}>submit</button>
+      </form>
     </div>
-  );
+  )
 }
-
-export default App;
